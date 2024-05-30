@@ -17,8 +17,18 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex ml-4">
-                    <x-nav-link :href="route('rols')" :active="request()->routeIs('rols')">
+                    <x-nav-link :href="route('role')" :active="request()->routeIs('role')">
                         {{ __('Data Role') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex ml-4">
+                    <x-nav-link :href="route('dataproducts')" :active="request()->routeIs('dataproducts')">
+                        {{ __('Data Product') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex ml-4">
+                    <x-nav-link :href="route('datacategory')" :active="request()->routeIs('datacategory')">
+                        {{ __('Data Category') }}
                     </x-nav-link>
                 </div>
             </div>

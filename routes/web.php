@@ -1,8 +1,13 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProduckController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RolesController;
 use App\Http\Controllers\RolsController;
 use App\Http\Controllers\UserController;
 use App\Models\Rols;
@@ -29,14 +34,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/edit/{id}', [DashboardController::class, 'edit'])->name('edit');
     Route::post('/update/{id}', [DashboardController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [DashboardController::class, 'delete'])->name('delete');
-    Route::post('/createrols', [DashboardController::class, 'addrols'])->name('createrols');
+    Route::post('/createrole', [DashboardController::class, 'createroles'])->name('createrolesuser');
 
     // Data Role
-    Route::get('/datarols', [RolsController::class, 'index'])->name('rols');
-    Route::post('/addrols', [RolsController::class, 'create'])->name('addrols');
-    Route::get('/editrols/{id}', [RolsController::class, 'edit'])->name('editrols');
-    Route::post('/updaterols/{id}', [RolsController::class, 'update'])->name('updaterols');
-    Route::delete('/deleterols/{id}', [RolsController::class, 'delete'])->name('deleterols');
+    Route::get('/datarole', [RolesController::class, 'index'])->name('role');
+    Route::post('/createroles', [RolesController::class, 'create'])->name('createroles');
+    Route::get('/editroles/{id}', [RolesController::class, 'edit'])->name('editroles');
+    Route::post('/updateroles/{id}', [RolesController::class, 'update'])->name('updatedroles');
+    Route::delete('/deleteroles/{id}', [RolesController::class, 'delete'])->name('deleteroles');
+
+    // Data Product
+    Route::get('/products', [ProductController::class, 'index'])->name('dataproducts');
+
+    // Data Category
+    Route::get('/categorys', [CategoryController::class, 'index'])->name('datacategory');
+    Route::post('/createcategory', [CategoryController::class, 'create'])->name('createcategory');
 });
 
 require __DIR__ . '/auth.php';

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use App\Models\Roles;
 use App\Models\Rols;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -16,27 +18,27 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $db = User::with('rols')->get();
-        $rols = DB::table('rols')->get();
-        return view('dashboard', compact('db', 'rols'));
+        $db = User::with('role')->paginate(5);
+        $role = DB::table('roles')->get();
+        return view('dashboard', compact('db', 'role'));
     }
     public function create()
     {
-        $rols = DB::table('rols')->get();
-        return view('user.create', compact('rols'));
+        $role = DB::table('roles')->get();
+        return view('user.create', compact('role'));
     }
     public function store(Request $request)
     {
         $request->validate(
             [
                 'name' => ['required', 'string', 'max:255'],
-                'rols_id' => ['required'],
+                'role_id' => ['required'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8'],
             ],
             [
                 'name.required' => 'Nama Lengkap harus diisi!!',
-                'rols_id.required' => 'Role harus diisi!!',
+                'role_id.required' => 'Role harus diisi!!',
                 'name.max' => 'Nama tidak boleh lebih dari 255 character!!',
                 'email.required' => 'Email harus diisi!!',
                 'email.email' => 'Email harus berformat email yang valid!!',
@@ -49,7 +51,7 @@ class DashboardController extends Controller
 
         $user = User::create([
             'name' => $request->name,
-            'rols_id' => $request->rols_id,
+            'role_id' => $request->role_id,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -88,9 +90,9 @@ class DashboardController extends Controller
 
     public function edit($id)
     {
-        $user = User::with('rols')->find($id);
-        $rols = DB::table('rols')->get();
-        return view('user.edit', compact('user', 'rols'));
+        $user = User::with('role')->find($id);
+        $role = DB::table('roles')->get();
+        return view('user.edit', compact('user', 'role'));
     }
 
     public function update(Request $request, $id)
@@ -98,7 +100,7 @@ class DashboardController extends Controller
         // Validasi data yang masuk (sesuaikan dengan kebutuhan)
         $request->validate([
             'name' => 'nullable|string|max:255',
-            'rols_id' => 'nullable|string|max:255',
+            'role_id' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255|unique:users,email,' . $id,
             'password' => 'nullable|string|min:8',
             // Tambahkan validasi lainnya sesuai kebutuhan
@@ -109,7 +111,7 @@ class DashboardController extends Controller
 
         // Perbarui hanya field yang diisi
         $user->name = $request->input('name') ?: $user->name;
-        $user->rols_id = $request->input('rols_id') ?: $user->rols_id;
+        $user->role_id = $request->input('role_id') ?: $user->role_id;
         $user->email = $request->input('email') ?: $user->email;
 
         // Jika password diisi, enkripsi dan perbarui
@@ -126,18 +128,19 @@ class DashboardController extends Controller
 
     // Rols
 
-    public function addrols(Request $request): RedirectResponse
+    public function createroles(Request $request): RedirectResponse
     {
         $validator = Validator::make(
             $request->all(),
             [
-                'name_rols' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
+                'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/', 'unique:roles'],
             ],
             [
-                'name_rols.required' => 'Nama Role harus diisi!!',
-                'name_rols.string' => 'Nama Role harus tipe data string!!',
-                'name_rols.max' => 'Nama Role tidak boleh lebih dari 255 karakter!!',
-                'name_rols.regex' => 'Hanya boleh mengandung huruf dan spasi!!'
+                'name.required' => 'Nama Role harus diisi!!',
+                'name.string' => 'Nama Role harus tipe data string!!',
+                'name.max' => 'Nama Role tidak boleh lebih dari 255 karakter!!',
+                'name.regex' => 'Hanya boleh mengandung huruf dan spasi!!',
+                'name.unique' => 'Role sudah ada!!',
             ]
         );
 
@@ -151,7 +154,7 @@ class DashboardController extends Controller
         $validated = $validator->validated();
 
         // Create the post...
-        Rols::create($validated);
+        Roles::create($validated);
 
         if ($validated) {
             return redirect('dashboard')->with('success', 'Role Created Successfully!');

@@ -44,7 +44,7 @@
                     <!-- End Alert ERROR -->
 
                     <!-- ALERT ERROR VALIDASI MODAL ADD ROLE -->
-                    @error('name_rols')
+                    @error('name')
                     <div id="alert-border-2" class="flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800" role="alert">
                         <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
@@ -99,7 +99,7 @@
                             @foreach ($db as $item)
                             <tr class="bg-white dark:bg-gray-800">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $item->name_rols }}
+                                    {{ $item->name }}
                                 </th>
                                 <td class="px-6 py-4">
                                     {{ $item->created_at }}
@@ -108,7 +108,7 @@
                                     {{ $item->updated_at }}
                                 </td>
                                 <td>
-                                    <a href="{{ route('editrols', $item->id) }}" type="button" class="relative inline-flex p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800 mt-2">
+                                    <a href="{{ route('editroles', $item->id) }}" type="button" class="relative inline-flex p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800 mt-2">
                                         <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                             Edit
                                         </span>
@@ -142,7 +142,7 @@
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                     Tambah Data Role
                 </h3>
-                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modalRole">
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modalRoles">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
@@ -152,11 +152,11 @@
             <!-- Modal body -->
             <div class="relative overflow-x-auto">
                 <div class="w-full w-sm  bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-                    <form action="{{ route('addrols') }}" method="POST">
+                    <form action="{{ route('createroles') }}" method="POST">
                         @csrf
                         <div>
-                            <label for="name_rols" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-2">Nama Role</label>
-                            <input type="text" name="name_rols" id="name_rols" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm items-center justify-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white mb-3 @error('name_rols') is-invalid  @enderror" placeholder="Masukan Nama Role" />
+                            <label for="name_role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-2">Nama Role</label>
+                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm items-center justify-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white mb-3 @error('name_role') is-invalid  @enderror" placeholder="Masukan Nama Role" />
                         </div>
                         <button type="submit" class="w-full mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan</button>
                     </form>
@@ -176,7 +176,7 @@
                 </svg>
                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah kamu yakin ingin menghapus data ini?</h3>
                 <!-- Form untuk penghapusan -->
-                <form id="delete-form" action="{{ route('deleterols', $item->id) }}" method="POST" class="inline">
+                <form id="delete-form" action="{{ route('deleteroles', $item->id) }}" method="POST" class="inline">
                     @csrf
                     @method('DELETE')
                     <button data-modal-hide="popup-modal" type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">

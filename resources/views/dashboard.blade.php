@@ -61,13 +61,13 @@
                             </svg>
                         </button>
                     </div>
-                    @elseif ($errors->has('rols_id'))
+                    @elseif ($errors->has('role_id'))
                     <div id="alert-border-2" class="flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800" role="alert">
                         <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                         </svg>
                         <div class="ms-3 text-sm font-medium ml-2" style="margin-right: 83%;">
-                            {{ $errors->first('rols_id') }}
+                            {{ $errors->first('role_id') }}
                         </div>
                         <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-border-2" aria-label="Close">
                             <span class="sr-only">Dismiss</span>
@@ -111,7 +111,7 @@
 
 
                     <!-- ALERT ERROR VALIDASI MODAL ADD ROLE -->
-                    @error('name_rols')
+                    @error('name')
                     <div id="alert-border-2" class="flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800" role="alert">
                         <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
@@ -172,7 +172,7 @@
                                         {{ $user->name }}
                                     </th>
                                     <td class="px-6 py-4">
-                                        {{ $user->rols->name_rols }}
+                                        {{ $user->role->name }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ $user->email }}
@@ -252,10 +252,10 @@
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H6Zm7.25-2.095c.478-.86.75-1.85.75-2.905a5.973 5.973 0 0 0-.75-2.906 4 4 0 1 1 0 5.811ZM15.466 20c.34-.588.535-1.271.535-2v-1a5.978 5.978 0 0 0-1.528-4H18a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2h-4.535Z" clip-rule="evenodd" />
                                 </svg>
                             </span>
-                            <select id="underline_select" name="rols_id" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('rols_id') is-invalid  border-color: red; @enderror">
-                                <option value="{{ old('rols_id') }}" selected disabled>Pilih</option>
-                                @foreach($rols as $role)
-                                <option value=" {{ $role->id }}">{{ $role->name_rols }}</option>
+                            <select id="underline_select" name="role_id" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('rols_id') is-invalid  border-color: red; @enderror">
+                                <option value="{{ old('role_id') }}" selected disabled>Pilih</option>
+                                @foreach($role as $r)
+                                <option value=" {{ $r->id }}">{{ $r->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -306,7 +306,7 @@
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Tambah Data Role
+                    Tambah Data Roles
                 </h3>
                 <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -318,11 +318,11 @@
             <!-- Modal body -->
             <div class="relative overflow-x-auto">
                 <div class="w-full w-sm  bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-                    <form action="{{ route('createrols') }}" method="POST">
+                    <form action="{{ route('createrolesuser') }}" method="POST">
                         @csrf
                         <div>
-                            <label for="name_rols" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-2">Nama Role</label>
-                            <input type="text" name="name_rols" id="name_rols" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm items-center justify-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white mb-3 @error('name_rols') is-invalid  @enderror" placeholder="Masukan Nama Role" />
+                            <label for="name_role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-2">Nama Role</label>
+                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm items-center justify-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white mb-3 @error('name_role') is-invalid  @enderror" placeholder="Masukan Nama Role" />
                         </div>
                         <button type="submit" class="w-full mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan</button>
                     </form>
