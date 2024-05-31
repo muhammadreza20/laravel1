@@ -20,8 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $rols = DB::table('rols')->get();
-        return view('auth.register', compact('rols'));
+        return view('auth.register');
     }
 
     /**
@@ -37,14 +36,11 @@ class RegisteredUserController extends Controller
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ],
-            [
-                'rols_id.required' => 'Role harus diisi!!',
-            ]
         );
 
         $user = User::create([
             'name' => $request->name,
-            'rols_id' => '1',
+            'role_id' => '1',
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

@@ -18,7 +18,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $db = User::with('role')->paginate(5);
+        $db = User::with('role')->paginate(4);
         $role = DB::table('roles')->get();
         return view('dashboard', compact('db', 'role'));
     }

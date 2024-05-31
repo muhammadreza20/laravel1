@@ -12,16 +12,7 @@
                             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
-                        <div class="mt-4">
-                            <!-- <label for="website-admin" class="block mb-2 mt-3 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                            <select id="underline_select" name="rols_id" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('rols_id') is-invalid  border-color: red; @enderror">
-                                <option value="{{ old('rols_id') }}" selected disabled>Pilih</option>
-                                @foreach($rols as $role)
-                                <option value=" {{ $role->id }}">{{ $role->name_rols }}</option>
-                                @endforeach
-                            </select>
-                            <x-input-error :messages="$errors->get('rols_id')" class="mt-2" /> -->
-                        </div>
+
 
                         <div class="mt-4">
                             <x-input-label for="email" :value="__('Email')" />
