@@ -17,7 +17,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Data Product') }}
         </h2>
     </x-slot>
 
@@ -62,7 +62,7 @@
 
                     <div class="relative overflow-x-auto">
                         <div class="flex space-x-2 mb-4">
-                            <button data-modal-target="authentication-modalUser" data-modal-toggle="authentication-modalUser" class="relative inline-flex items-center justify-center p-0.5 mb-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800" type="button">
+                            <button data-modal-target="authentication-modalProduct" data-modal-toggle="authentication-modalProduct" class="relative inline-flex items-center justify-center p-0.5 mb-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800" type="button">
                                 <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                     Tambah Data
                                 </span>
@@ -73,6 +73,9 @@
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        No
+                                    </th>
                                     <th scope="col" class="px-6 py-3">
                                         Gambar
                                     </th>
@@ -86,10 +89,10 @@
                                         Harga
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        User
+                                        Kategori
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Kategori
+                                        User
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Action
@@ -97,6 +100,54 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                $no = 1;
+                                @endphp
+                                @foreach ($db as $item)
+                                <tr class="bg-white dark:bg-gray-800">
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $no++ }} <!-- Menampilkan nomor urut dan meningkatkan counter -->
+                                    </th>
+                                    <td>
+                                        @if($item->image)
+                                        <img src="{{ asset('product/img/' . $item->image) }}" style="width:35px; margin-left:35px;">
+                                        @else
+                                        <span>Tidak ada gambar</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $item->name }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $item->description }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        Rp. {{ number_format($item->price) }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $item->category->name }}
+                                    </td>
+                                    @if($item->user_id == null)
+                                    <td>{{ Auth()->user()->name }}</td>
+                                    @else
+                                    <td class="px-6 py-4">
+                                        {{ $item->user->name }}
+                                    </td>
+                                    @endif
+                                    <td>
+                                        <a href="" type="button" class="relative inline-flex p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800 mt-2">
+                                            <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                                Edit
+                                            </span>
+                                        </a>
+                                        <button type="submit" data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="inline-flex p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
+                                            <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                                Delete
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                @endforeach
 
                             </tbody>
                         </table>
@@ -109,7 +160,7 @@
 
 
 <!-- MODAL TAMBAH USER -->
-<div id="authentication-modalUser" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="authentication-modalProduct" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -118,7 +169,7 @@
                 <h4 class="text-xl font-semibold text-gray-900 dark:text-white">
                     TAMBAH DATA PRODUCT
                 </h4>
-                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modalUser">
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modalProduct">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
@@ -128,7 +179,7 @@
             <!-- Modal body -->
             <div class="relative overflow-x-auto">
                 <div class="w-full w-sm  bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-                    <form action="/store" method="POST" class="max-w-sm mx-auto">
+                    <form action="{{ route('createproducts') }}" method="POST" class="max-w-sm mx-auto" enctype="multipart/form-data">
                         @csrf
                         <label for="website-admin" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Product</label>
                         <div class="flex">
@@ -146,7 +197,7 @@
 
                         <label for="website-admin" class="block mb-2 mt-3 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                         <div class="flex">
-                            <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Isi deksripsi product disini..."></textarea>
+                            <textarea id="message" name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Isi deksripsi product disini..."></textarea>
                         </div>
 
                         <label for="harga" class="block mb-2 mt-3 text-sm font-medium text-gray-900 dark:text-white">Harga</label>
@@ -156,7 +207,7 @@
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M8 17.345a4.76 4.76 0 0 0 2.558 1.618c2.274.589 4.512-.446 4.999-2.31.487-1.866-1.273-3.9-3.546-4.49-2.273-.59-4.034-2.623-3.547-4.488.486-1.865 2.724-2.899 4.998-2.31.982.236 1.87.793 2.538 1.592m-3.879 12.171V21m0-18v2.2" />
                                 </svg>
                             </span>
-                            <input type="text" name="price" id="harga" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('price') is-invalid @enderror" value="{{ old('price') }}" placeholder="Rp.">
+                            <input type="number" name="price" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('price') is-invalid @enderror" value="{{ old('price') }}" placeholder="Rp.">
                         </div>
                         @error('price')
                         <p class="text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span> {{ $message }}</p>
@@ -171,9 +222,11 @@
                                     <path d="M18.045 3.007 12.31 3a1.965 1.965 0 0 0-1.4.585l-7.33 7.394a2 2 0 0 0 0 2.805l6.573 6.631a1.957 1.957 0 0 0 1.4.585 1.965 1.965 0 0 0 1.4-.585l7.409-7.477A2 2 0 0 0 21 11.479v-5.5a2.972 2.972 0 0 0-2.955-2.972Zm-2.452 6.438a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
                                 </svg>
                             </span>
-                            <select id="underline_select" name="category_id" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('rols_id') is-invalid  border-color: red; @enderror">
+                            <select id="underline_select" name="category_id" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('category_id') is-invalid  border-color: red; @enderror">
                                 <option value="{{ old('category_id') }}" selected disabled>Pilih</option>
-
+                                @foreach($category as $c)
+                                <option value=" {{ $c->id }}">{{ $c->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -187,7 +240,7 @@
                                     </svg>
                                 </span>
                                 <label class="flex-1 min-w-0 w-full">
-                                    <input type="file" id="user_avatar" class="hidden" onchange="updateFileName(this)">
+                                    <input type="file" id="user_avatar" name="image" class="hidden" onchange="updateFileName(this)">
                                     <span class="block w-full text-sm text-gray-900 border border-gray-300 rounded-e-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 p-2.5">Pilih File....</span>
                                 </label>
                             </div>

@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
 
     // Data Product
     Route::get('/products', [ProductController::class, 'index'])->name('dataproducts');
+    Route::post('/createproducts', [ProductController::class, 'store'])->name('createproducts');
 
     // Data Category
     Route::get('/categorys', [CategoryController::class, 'index'])->name('datacategory');
