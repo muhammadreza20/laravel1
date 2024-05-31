@@ -30,6 +30,11 @@
         margin: 0;
         /* Menghapus margin bawaan */
     }
+
+    .pagination {
+        margin-right: 25px;
+        /* Atur nilai margin sesuai kebutuhan Anda */
+    }
 </style>
 <x-app-layout>
     <x-slot name="header">
@@ -118,7 +123,7 @@
                             </thead>
                             <tbody>
                                 @php
-                                $no = 1;
+                                $no = ($db->currentPage() - 1) * $db->perPage() + 1;
                                 @endphp
                                 @foreach ($db as $item)
                                 <tr class="bg-white dark:bg-gray-800">
@@ -169,7 +174,14 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $db->links('pagination::tailwind') }}
+                        @php
+                        // Simpan nomor urut terakhir
+                        $lastNo = $no - 1;
+                        @endphp
+
+                        <div class="pagination">
+                            {{ $db->links('pagination::tailwind') }}
+                        </div>
                     </div>
                 </div>
             </div>
