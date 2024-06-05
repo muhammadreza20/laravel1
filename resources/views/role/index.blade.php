@@ -1,3 +1,9 @@
+<style>
+    .pagination {
+        margin-right: 20px;
+        /* Atur nilai margin sesuai kebutuhan Anda */
+    }
+</style>
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -66,21 +72,24 @@
                     <div class="relative overflow-x-auto">
                         <div class="flex space-x-2 mb-4">
                             <button data-modal-target="authentication-modalRoles" data-modal-toggle="authentication-modalRoles" class="relative inline-flex items-center justify-center p-0.5 mb-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 flex items-center inline-block">
-                                <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                <span class="relative px-3 py-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                     Tambah Role
                                 </span>
                             </button>
-                            <a href="{{ route('dashboard') }}" class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 flex items-center inline-block" style="max-width: 124px;">
-                                <svg class="w-[26px] h-[26px] dark:text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="22" fill="none" viewBox="0 0 24 24">
+                            <a href="{{ route('dashboard') }}" class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 flex items-center inline-block" style="max-width: 115px;">
+                                <svg class="w-[25px] h-[26px] dark:text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="22" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2" />
                                 </svg>
                                 <span>Kembali</span>
                             </a>
                         </div>
                     </div>
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5 ">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    No
+                                </th>
                                 <th scope="col" class="px-6 py-3">
                                     Nama Role
                                 </th>
@@ -90,17 +99,23 @@
                                 <th scope="col" class="px-6 py-3">
                                     Updated At
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-10 py-3">
                                     Action
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                            $no = ($db->currentPage() - 1) * $db->perPage() + 1;
+                            @endphp
                             @foreach ($db as $item)
                             <tr class="bg-white dark:bg-gray-800">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $item->name }}
+                                    {{ $no++ }}
                                 </th>
+                                <td class="px-6 py-4">
+                                    {{ $item->name }}
+                                </td>
                                 <td class="px-6 py-4">
                                     {{ $item->created_at }}
                                 </td>
@@ -113,8 +128,8 @@
                                             Edit
                                         </span>
                                     </a>
-                                    <button type="submit" data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="inline-flex p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
-                                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                    <button type="submit" data-modal-target="popup-modal" data-modal-toggle="popup-modal" class=" inline-flex p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
+                                        <span class="relative px-3 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                             Delete
                                         </span>
                                     </button>
@@ -124,6 +139,14 @@
                         </tbody>
                     </table>
                     <!-- END DATA TABLE -->
+                    @php
+                    // Simpan nomor urut terakhir
+                    $lastNo = $no - 1;
+                    @endphp
+
+                    <div class="pagination">
+                        {{ $db->links('pagination::tailwind') }}
+                    </div>
                 </div>
             </div>
         </div>

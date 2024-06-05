@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use App\Models\Roles;
-use App\Models\Rols;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -12,16 +10,40 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 
 class DashboardController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $db = User::with('role')->paginate(4);
-        $role = DB::table('roles')->get();
-        return view('dashboard', compact('db', 'role'));
+        // Ambil kata kunci pencarian dari input form
+        $search = $request->input('search');
+
+        // Query untuk mengambil data pengguna dengan relasi peran (role)
+        $query = User::with('role');
+
+        // Jika ada kata kunci pencarian, tambahkan kondisi untuk mencari berdasarkan nama atau peran
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%")
+                    ->orWhereHas('role', function ($r) use ($search) {
+                        $r->where('name', 'LIKE', "%$search%");
+                    });
+            });
+        }
+
+        // Ambil data pengguna berdasarkan hasil query
+        $db = $query->paginate(4);
+
+        // Ambil daftar peran (roles)
+        $role = Roles::all();
+
+        // Kembalikan data pengguna dan daftar peran ke halaman dashboard
+        return view('dashboard', compact('db', 'role', 'search'));
     }
+
     public function create()
     {
         $role = DB::table('roles')->get();
@@ -94,40 +116,52 @@ class DashboardController extends Controller
         $role = DB::table('roles')->get();
         return view('user.edit', compact('user', 'role'));
     }
-
-    public function update(Request $request, $id)
+    // REplace with your own code
+    public function getUserData($id)
     {
-        // Validasi data yang masuk (sesuaikan dengan kebutuhan)
+        // Mengambil data pengguna berdasarkan ID yang diberikan
+        $user = User::with('role')->find($id);
+        $role = $user->role->name;
+
+        // Kirim data pengguna sebagai respons JSON
+        return response()->json(['status' => 'success', 'data' => $user, 'role_name' => $role]);
+    }
+
+
+    public function update(Request $request)
+    {
+        $user = User::findOrFail($request->id); // Menggunakan $request->user_id
+
+        // Validasi input
         $request->validate([
-            'name' => 'nullable|string|max:255',
-            'role_id' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255|unique:users,email,' . $id,
+            'name' => 'required|string|max:255',
+            'role_id' => 'required|integer|exists:roles,id',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
             'password' => 'nullable|string|min:8',
-            // Tambahkan validasi lainnya sesuai kebutuhan
         ]);
 
-        // Ambil data pengguna dari database
-        $user = User::findOrFail($id);
-
-        // Perbarui hanya field yang diisi
-        $user->name = $request->input('name') ?: $user->name;
-        $user->role_id = $request->input('role_id') ?: $user->role_id;
-        $user->email = $request->input('email') ?: $user->email;
-
-        // Jika password diisi, enkripsi dan perbarui
+        // Update data user
+        $user->name = $request->name;
+        $user->role_id = $request->role_id;
+        $user->email = $request->email;
         if ($request->filled('password')) {
-            $user->password = Hash::make($request->input('password'));
+            $user->password = Hash::make($request->password);
         }
 
-        // Simpan perubahan
         $user->save();
 
         // Redirect ke halaman yang sesuai dengan pesan sukses
-        return redirect()->route('dashboard', $id)->with('success', 'Data User Berhasil Diperbarui');
+        return redirect()->route('dashboard')->with('success', 'Data User Berhasil Diperbarui');
     }
 
-    // Rols
 
+    // Rols
     public function createroles(Request $request): RedirectResponse
     {
         $validator = Validator::make(

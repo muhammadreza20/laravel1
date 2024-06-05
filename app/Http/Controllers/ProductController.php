@@ -32,6 +32,11 @@ class ProductController extends Controller
             'category_id' => ['required', 'integer'],
         ], [
             'name.required' => 'Nama harus diisi!',
+            'description.required' => 'Deskripsi harus diisi!',
+            'price.required' => 'Harga harus diisi!',
+            'image.required' => 'Gambar harus diisi!',
+            'image.image' => 'File harus berupa gambar!',
+            'category_id.required' => 'Kategori harus diisi!',
             'name.string' => 'Nama harus berupa teks!',
             'image.required' => 'Gambar harus diisi!',
             'image.image' => 'File harus berupa gambar!',

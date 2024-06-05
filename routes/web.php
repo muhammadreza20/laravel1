@@ -31,8 +31,9 @@ Route::middleware('auth')->group(function () {
     // Data User
     Route::get('/create', [DashboardController::class, 'create'])->name('create');
     Route::post('/store', [DashboardController::class, 'store'])->name('store');
-    Route::get('/edit/{id}', [DashboardController::class, 'edit'])->name('edit');
-    Route::post('/update/{id}', [DashboardController::class, 'update'])->name('update');
+    // Route::get('/edit/{id}', [DashboardController::class, 'edit'])->name('edit');
+    Route::get('/edit/{id}', [DashboardController::class, 'getUserData']);
+    Route::post('/update', [DashboardController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [DashboardController::class, 'delete'])->name('delete');
     Route::post('/createrole', [DashboardController::class, 'createroles'])->name('createrolesuser');
 

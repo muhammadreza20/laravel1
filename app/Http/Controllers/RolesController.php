@@ -12,7 +12,7 @@ class RolesController extends Controller
 {
     public function index()
     {
-        $db = Roles::paginate(4);
+        $db = Roles::paginate(3);
         return view('role.index', compact('db'));
     }
 
@@ -93,8 +93,9 @@ class RolesController extends Controller
         return redirect('datarole')->with('success', 'Role Updated Successfully!');
     }
 
-    public function delete($id)
+    public function delete($id, Request $request)
     {
+        $currentPage = $request->query('page', 1);
         // Temukan data "rols" berdasarkan ID
         $rols = Roles::find($id);
 
@@ -107,6 +108,6 @@ class RolesController extends Controller
         $rols->delete();
 
         // Redirect kembali dengan pesan sukses
-        return redirect()->route('role')->with('success', 'Role Deleted Successfully!');
+        return redirect()->route('role', ['page' => $currentPage])->with('success', 'Role deleted successfully');
     }
 }
